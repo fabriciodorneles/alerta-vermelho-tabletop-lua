@@ -1,3 +1,50 @@
 <!-- Xml UI. See documentation: https://api.tabletopsimulator.com/ui/introUI/ -->
 
-<button onClick="growBabies" width="150" height="35" position="70% 300 0" fontSize="20">Crescer Bebês</button>
+<panel 
+    active="true"
+	width="315"	
+    height="390"
+	color="#FFD700"
+	rectAlignment="LowerRight" 
+    offsetXY="-10 75"
+	allowDragging="true" 
+    returnToOriginalPositionWhenReleased="false"
+>
+    <VerticalLayout>
+        <Text 
+            id="MainGameNotes" 
+            color="#006400" 
+            fontSize="18" 
+            alignment="TopCenter"
+        >
+            MONSTROS
+        </Text>
+        <HorizontalLayout>
+            <button
+                onClick="growEggs" 
+                width="150" 
+                height="35" 
+            >
+                CRESCER OVOS/FRAGMENTOS
+            </button>
+        </HorizontalLayout>
+        <HorizontalLayout>
+            <button
+                onClick="growBabies" 
+                width="150" 
+                height="35" 
+            >
+                CRESCER BEBÊS
+            </button>
+        </HorizontalLayout>
+        <HorizontalLayout>
+            <button
+                onClick="growAdults" 
+                width="150" 
+                height="35" 
+            >
+                BOTAR OVOS(ADULTOS)
+            </button>
+        </HorizontalLayout>
+    </VerticalLayout>
+</panel>
