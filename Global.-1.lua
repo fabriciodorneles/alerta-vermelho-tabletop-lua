@@ -30,24 +30,63 @@ ADULT_MONSTER_POOL_ZONE = "7b6e54"
 FRAGMENT_MONSTER_POOL_ZONE = "52b551"
 BOARD_ZONE = "8df471"
 
+function onLoad()
+      boardZone = getObjectFromGUID(BOARD_ZONE)
+      eggMonsterZone = getObjectFromGUID(EGG_MONSTER_POOL_ZONE)
+      babyMonsterZone = getObjectFromGUID(BABY_MONSTER_POOL_ZONE)
+      adultMonsterZone = getObjectFromGUID(ADULT_MONSTER_POOL_ZONE)
+end
 
+
+function getDeck(zone)
+      local zoneObjects = zone.getObjects()
+      for _, item in ipairs(zoneObjects) do
+            if item.tag == 'Deck' then
+                  return item
+            end 
+      end
+      for _, item in ipairs(zoneObjects) do
+            if item.tag == 'Card' then
+                  return item
+            end 
+      end
+      return nil
+end
+
+function deckExists(zone)
+      return getDeck(zone) != nil
+end
 
 
 function growBabies()
-    print('Grow Babies!')
-end
 
-function onUpdate()
+      print('Grow Babies!')
+      local babyDeck = getDeck(babyMonsterZone)
+      local adultDeck = getDeck(adultMonsterZone)
+      local adultQuantity = 0
+      if adultDeck != nil then            
+            adultQuantity = adultDeck.getQuantity()
+      end
+      local limitCounter = 0
+      boardObjects = boardZone.getObjects()
+
+      for i=1, #boardObjects do
+            if boardObjects[i].hasTag('Monster') and boardObjects[i].hasTag('Baby') and limitCounter < adultQuantity then
+                  limitCounter = limitCounter + 1
+                  local tempPos = boardObjects[i].getPosition()
+                  adultDeck.takeObject({flip = true, position = tempPos})
+                  babyDeck.putObject(boardObjects[i])
+            end 
+      end
+
+
 end
 
 function onChat()
-    getDeck(eggMonsterDeckZone).deal(1,"White")
+    getDeck(eggMonsterZone).deal(1,"White")
 end
 
-
-
-
-function onObjectPickUp( player_color,  picked_up_object)
+function onObjectPickUp(player_color,picked_up_object)
     print ( picked_up_object.getPosition() )
     if  picked_up_object.getPosition()[3] > 26.0 then
           nome = picked_up_object.getName()
@@ -61,7 +100,7 @@ function onObjectPickUp( player_color,  picked_up_object)
           elseif nome == 'Of.Oper.' then
                 Player[player_color].pingTable( congelamento )
                 Player[player_color].pingTable( cabOficiais )
-          elseif nome =dd= 'Of.Eng.' then
+          elseif nome == 'Of.Eng.' then
                 Player[player_color].pingTable( reatores )
                 Player[player_color].pingTable( recreacao )
           elseif nome == 'Of.Suprim.' then
@@ -86,7 +125,7 @@ function onObjectPickUp( player_color,  picked_up_object)
           elseif nome == 'Enfermeiro' then
                 Player[player_color].pingTable( ambulatorio )
                 Player[player_color].pingTable( enfermaria )
-          elseif nome =d= 'Tecnico' then
+          elseif nome == 'Tecnico' then
                 Player[player_color].pingTable( sensor1 )
                 Player[player_color].pingTable( sensor2 )
                 Player[player_color].pingTable( sensor3 )
