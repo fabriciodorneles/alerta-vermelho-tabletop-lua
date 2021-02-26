@@ -33,6 +33,7 @@ BOARD_ZONE = "8df471"
 function onLoad()
       boardZone = getObjectFromGUID(BOARD_ZONE)
       eggMonsterZone = getObjectFromGUID(EGG_MONSTER_POOL_ZONE)
+      fragmentMonsterZone = getObjectFromGUID(FRAGMENT_MONSTER_POOL_ZONE)
       babyMonsterZone = getObjectFromGUID(BABY_MONSTER_POOL_ZONE)
       adultMonsterZone = getObjectFromGUID(ADULT_MONSTER_POOL_ZONE)
 end
@@ -67,7 +68,6 @@ end
 
 
 function growBabies()
-
       print('Grow Babies!')
       local babyDeck = getDeck(babyMonsterZone)
       local adultDeck = getDeck(adultMonsterZone)
@@ -90,12 +90,37 @@ function growBabies()
                   babyDeck.putObject(boardObjects[i])
             end 
       end
-
-
 end
 
-function onChat()
-    getDeck(eggMonsterZone).deal(1,"White")
+function growEggs()
+      print('Grow Babies!')
+      local babyDeck = getDeck(babyMonsterZone)
+      local eggDeck = getDeck(eggMonsterZone)
+      local fragmentDeck = getDeck(fragmentMonsterZone)
+      local babyQuantity = getDeckSize(babyDeck)
+      local limitCounter = 0
+
+      boardObjects = boardZone.getObjects()
+      print('baby quant -->', babyQuantity)
+      for i=1, #boardObjects do
+            if boardObjects[i].hasTag('Monster') and (boardObjects[i].hasTag('Egg') or boardObjects[i].hasTag('Fragment')) and limitCounter < babyQuantity then
+                  limitCounter = limitCounter + 1
+                  local tempPos = boardObjects[i].getPosition()
+                  if babyDeck.tag == 'Deck' then
+                        babyDeck.takeObject({flip = true, position = tempPos})
+                  end 
+                  if babyDeck.tag == 'Card' then
+                        monsterCards = babyMonsterZone.getObjects()
+                        monsterCards[1].setPosition(tempPos)
+                  end
+                  if boardObjects[i].hasTag('Egg') then
+                        eggDeck.putObject(boardObjects[i])
+                  end 
+                  if boardObjects[i].hasTag('Fragment') then
+                        fragmentDeck.putObject(boardObjects[i])
+                  end 
+            end 
+      end
 end
 
 function onObjectPickUp(player_color,picked_up_object)
