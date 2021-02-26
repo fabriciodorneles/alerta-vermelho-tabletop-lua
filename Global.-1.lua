@@ -53,8 +53,16 @@ function getDeck(zone)
       return nil
 end
 
-function deckExists(zone)
-      return getDeck(zone) != nil
+function getDeckSize(deck)
+      if deck != nil then            
+            if deck.tag == 'Deck' then
+                  return deck.getQuantity()
+            end 
+            if deck.tag == 'Card' then
+                  return 1
+            end 
+      end
+      return 0
 end
 
 
@@ -63,18 +71,22 @@ function growBabies()
       print('Grow Babies!')
       local babyDeck = getDeck(babyMonsterZone)
       local adultDeck = getDeck(adultMonsterZone)
-      local adultQuantity = 0
-      if adultDeck != nil then            
-            adultQuantity = adultDeck.getQuantity()
-      end
+      local adultQuantity = getDeckSize(adultDeck)
       local limitCounter = 0
-      boardObjects = boardZone.getObjects()
 
+      boardObjects = boardZone.getObjects()
+      print('adult quant -->', adultQuantity)
       for i=1, #boardObjects do
             if boardObjects[i].hasTag('Monster') and boardObjects[i].hasTag('Baby') and limitCounter < adultQuantity then
                   limitCounter = limitCounter + 1
                   local tempPos = boardObjects[i].getPosition()
-                  adultDeck.takeObject({flip = true, position = tempPos})
+                  if adultDeck.tag == 'Deck' then
+                        adultDeck.takeObject({flip = true, position = tempPos})
+                  end 
+                  if adultDeck.tag == 'Card' then
+                        monsterCards = adultMonsterZone.getObjects()
+                        monsterCards[1].setPosition(tempPos)
+                  end 
                   babyDeck.putObject(boardObjects[i])
             end 
       end

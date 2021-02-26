@@ -2,19 +2,23 @@
 
 <panel 
     active="true"
-	width="315"	
-    height="390"
+	width="280"	
+    height="250"
 	color="#FFD700"
 	rectAlignment="LowerRight" 
-    offsetXY="-10 75"
+    offsetXY="-30 675"
 	allowDragging="true" 
     returnToOriginalPositionWhenReleased="false"
+    padding="15"
+    outline="#8B0000"
+    outlineSize="4"
 >
-    <VerticalLayout>
+    <VerticalLayout spacing="8">
         <Text 
             id="MainGameNotes" 
-            color="#006400" 
-            fontSize="18" 
+            color="#8B0000" 
+            fontSize="22" 
+            fontStyle="bold"
             alignment="TopCenter"
         >
             MONSTROS
@@ -23,7 +27,12 @@
             <button
                 onClick="growEggs" 
                 width="150" 
-                height="35" 
+                height="15"
+                fontStyle="bold"
+                outline="#006400"
+                outlineSize="2" 
+                color="#556B2F"               
+     
             >
                 CRESCER OVOS/FRAGMENTOS
             </button>
@@ -32,7 +41,11 @@
             <button
                 onClick="growBabies" 
                 width="150" 
-                height="35" 
+                height="15" 
+                fontStyle="bold"
+                outline="#006400"
+                outlineSize="2" 
+                color="#556B2F"               
             >
                 CRESCER BEBÊS
             </button>
@@ -41,7 +54,11 @@
             <button
                 onClick="growAdults" 
                 width="150" 
-                height="35" 
+                height="15" 
+                fontStyle="bold"
+                outline="#006400"
+                outlineSize="2" 
+                color="#556B2F"               
             >
                 BOTAR OVOS(ADULTOS)
             </button>
