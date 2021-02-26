@@ -66,34 +66,8 @@ function getDeckSize(deck)
       return 0
 end
 
-
-function growBabies()
-      print('Grow Babies!')
-      local babyDeck = getDeck(babyMonsterZone)
-      local adultDeck = getDeck(adultMonsterZone)
-      local adultQuantity = getDeckSize(adultDeck)
-      local limitCounter = 0
-
-      boardObjects = boardZone.getObjects()
-      print('adult quant -->', adultQuantity)
-      for i=1, #boardObjects do
-            if boardObjects[i].hasTag('Monster') and boardObjects[i].hasTag('Baby') and limitCounter < adultQuantity then
-                  limitCounter = limitCounter + 1
-                  local tempPos = boardObjects[i].getPosition()
-                  if adultDeck.tag == 'Deck' then
-                        adultDeck.takeObject({flip = true, position = tempPos})
-                  end 
-                  if adultDeck.tag == 'Card' then
-                        monsterCards = adultMonsterZone.getObjects()
-                        monsterCards[1].setPosition(tempPos)
-                  end 
-                  babyDeck.putObject(boardObjects[i])
-            end 
-      end
-end
-
 function growEggs()
-      print('Grow Babies!')
+      print('Grow Eggs!')
       local babyDeck = getDeck(babyMonsterZone)
       local eggDeck = getDeck(eggMonsterZone)
       local fragmentDeck = getDeck(fragmentMonsterZone)
@@ -101,7 +75,6 @@ function growEggs()
       local limitCounter = 0
 
       boardObjects = boardZone.getObjects()
-      print('baby quant -->', babyQuantity)
       for i=1, #boardObjects do
             if boardObjects[i].hasTag('Monster') and (boardObjects[i].hasTag('Egg') or boardObjects[i].hasTag('Fragment')) and limitCounter < babyQuantity then
                   limitCounter = limitCounter + 1
@@ -118,6 +91,55 @@ function growEggs()
                   end 
                   if boardObjects[i].hasTag('Fragment') then
                         fragmentDeck.putObject(boardObjects[i])
+                  end 
+            end 
+      end
+end
+
+function growBabies()
+      print('Grow Babies!')
+      local babyDeck = getDeck(babyMonsterZone)
+      local adultDeck = getDeck(adultMonsterZone)
+      local adultQuantity = getDeckSize(adultDeck)
+      local limitCounter = 0
+
+      boardObjects = boardZone.getObjects()
+      for i=1, #boardObjects do
+            if boardObjects[i].hasTag('Monster') and boardObjects[i].hasTag('Baby') and limitCounter < adultQuantity then
+                  limitCounter = limitCounter + 1
+                  local tempPos = boardObjects[i].getPosition()
+                  if adultDeck.tag == 'Deck' then
+                        adultDeck.takeObject({flip = true, position = tempPos})
+                  end 
+                  if adultDeck.tag == 'Card' then
+                        monsterCards = adultMonsterZone.getObjects()
+                        monsterCards[1].setPosition(tempPos)
+                  end 
+                  babyDeck.putObject(boardObjects[i])
+            end 
+      end
+end
+
+function growAdults()
+      print('Grow Adults!')
+      local adultDeck = getDeck(adultMonsterZone)
+      local eggDeck = getDeck(eggMonsterZone)
+      local eggQuantity = getDeckSize(eggDeck)
+      local limitCounter = 0
+
+      boardObjects = boardZone.getObjects()
+      print('egg quant --> ', eggQuantity)
+      for i=1, #boardObjects do
+            if boardObjects[i].hasTag('Monster') and boardObjects[i].hasTag('Adult') and limitCounter < eggQuantity then
+                  limitCounter = limitCounter + 1
+                  local tempPos = boardObjects[i].getPosition()
+                  tempPosX = tempPos[1] + 2
+                  if eggDeck.tag == 'Deck' then
+                        eggDeck.takeObject({flip = true, position = {tempPosX, tempPos[2], tempPos[3]}})
+                  end 
+                  if eggDeck.tag == 'Card' then
+                        eggCards = eggMonsterZone.getObjects()
+                        eggCards[1].setPosition(tempPos)
                   end 
             end 
       end
